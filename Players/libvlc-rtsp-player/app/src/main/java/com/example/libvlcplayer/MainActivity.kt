@@ -39,13 +39,7 @@ class MainActivity : AppCompatActivity()
         media.addOption(":clock-jitter=0")
         media.addOption(":clock-synchro=0")
         media.addOption(":rtsp-caching=0")
-//        options.add("--rtsp-tcp");
-//        options.add("--live-caching=0");
-//        options.add("--file-caching=0")
-//        options.add("--drop-late-frames")
-//        options.add("--skip-frames")
-//        options.add("--disc-caching=3000")
-//        options.add("--sout-mux-caching=0")
+        media.addOption(":rtsp-udp")
 
 
         mediaPlayer.media = media
