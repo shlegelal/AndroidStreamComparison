@@ -1,4 +1,4 @@
-package com.example.libvlc_test
+package com.example.libvlcplayer
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
