@@ -20,7 +20,6 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClickListener,
   SurfaceHolder.Callback {
 
