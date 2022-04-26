@@ -6,20 +6,21 @@ Design a system of two smartphones, one of which transmits live video from its c
 ## Overview
 ### Review protocols
 The following protocols for stream transmission over the network are considered:
--	Protocols work on TCP:
-     -   RTMP
-     -   HTTP and related HLS, DASH и MPEG-DASH
--	Protocols work on UDP, implementing tcp reliability at the application layer:
-     -   SRT
-     -   RTMFP
--   Protocol works on SCTP:
-     -   WebRTC
--   Protocol works on RTP:
-     -   RTSP
--   Protocols not included in the list:
-     -   FTL - the server-side implementation of Mixer’s FTL protocol is proprietary and closed-source as of this writing.
+- Protocols work on TCP:
+  - RTMP
+  - HTTP and related HLS, DASH и MPEG-DASH
+- Protocols work on UDP
+  - Implementing TCP reliability at the application layer:
+    - SRT
+    - RTMFP
+  - Protocol works on RTP:
+    - RTSP
+- Protocol works on SCTP:
+  - WebRTC
+- Protocols not included in the list:
+  - FTL - the server-side implementation of Mixer’s FTL protocol is proprietary and closed-source as of this writing.
 
-Secure and reliable protocols will have inherently higher latency than UDP-based protocols. Therefore, we will only consider RTSP.
+Secure and reliable protocols (RTMP, HTTP, SRT, RTMFP, WebRTC) will have inherently higher latency than UDP-based protocols. Therefore, we will only consider RTSP.
 ### Review RTSP servers
 The following libraries were found:
 - [RTSP-Server](https://github.com/pedroSG94/RTSP-Server)
