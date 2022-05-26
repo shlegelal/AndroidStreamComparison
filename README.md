@@ -20,6 +20,8 @@ The following protocols for stream transmission over the network are considered:
 - Protocols not included in the list:
   - FTL - the server-side implementation of Mixer’s FTL protocol is proprietary and closed-source as of this writing.
 
+![Protocols](https://github.com/shlegelal/AndroidStreamComparison/blob/main/res/eng.jpg)
+
 Secure and reliable protocols (RTMP, HTTP, SRT, RTMFP, WebRTC) will have inherently higher latency than UDP-based protocols. Therefore, we will only consider RTSP.
 ### Review RTSP servers
 The following libraries were found:
@@ -68,14 +70,21 @@ For my experiments I took the following devices
 - Android Galaxy S10 Lite as Player
 - Samsung Galaxy Tab S6 Lite camera with fps equal to 30
 
+![Stand](https://github.com/shlegelal/AndroidStreamComparison/blob/main/res/stand.jpg)
+
 The error of the Server and of the Player with a fps of 30 will be up to 4 centi seconds, 8 centi seconds in total. And given the fps of the camera, the latency counting error should not be more than 12 centi seconds.
 
 ## Results
 
 The following [VLC commands](https://wiki.videolan.org/VLC_command-line_help/) affect the latency:
 - network-caching
+![network-caching](https://github.com/shlegelal/AndroidStreamComparison/blob/main/res/vlc-nc.svg)
 - rtsp-caching
+![rtsp-caching](https://github.com/shlegelal/AndroidStreamComparison/blob/main/res/vlc-rc.svg)
 - clock-jitter
+![clock-jitter](https://github.com/shlegelal/AndroidStreamComparison/blob/main/res/vlc-cj.svg)
 - clock-synchro
+![clock-synchro](https://github.com/shlegelal/AndroidStreamComparison/blob/main/res/vlc-cs.svg)
 
 We managed to reach a latency of less than 0.4 second
+![Result](https://github.com/shlegelal/AndroidStreamComparison/blob/main/res/vlc-long.svg)
