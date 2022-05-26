@@ -23,12 +23,12 @@ The following protocols for stream transmission over the network are considered:
 Secure and reliable protocols (RTMP, HTTP, SRT, RTMFP, WebRTC) will have inherently higher latency than UDP-based protocols. Therefore, we will only consider RTSP.
 ### Review RTSP servers
 The following libraries were found:
-- [RTSP-Server](https://github.com/pedroSG94/RTSP-Server)
-- [sms](https://github.com/pengliren/sms)
-- [RTSP.Server.Android](https://github.com/VideoExpertsGroup/RTSP.Server.Android)
+- [rtmp-rtsp-stream-client-java](https://github.com/pedroSG94/rtmp-rtsp-stream-client-java)
 
 Excluded from consideration:
 - [libstreaming](https://github.com/fyhertz/libstreaming) - no camera2 API support.
+- [sms](https://github.com/pengliren/sms) - implements RTSP only over TCP.
+- [RTSP.Server.Android](https://github.com/VideoExpertsGroup/RTSP.Server.Android) - failed to start.
 - [Live555](https://github.com/papan01/Live555-server-android) - obsolete.
     - [LiveStreamer](https://github.com/papan01/LiveStreamer) - also not suitable.
     - [Live264Streamer](https://github.com/huzongyao/Live264Streamer)
@@ -39,13 +39,12 @@ Excluded from consideration:
 ### Review RTSP players
 Players base on [ffmpeg](https://www.ffmpeg.org/):
 - [Ijkplayer](https://github.com/Bilibili/ijkplayer)
-    - [rtsp_player](https://github.com/bowen919446264/rtsp_player)
-    - [GSYVideoPlayer](https://github.com/CarGuo/GSYVideoPlayer)
-- [mobile-ffmpeg](https://github.com/tanersener/mobile-ffmpeg)
+    - [rtsp_player](https://github.com/bowen919446264/rtsp_player) - project is not supported, the player could not be started.
+    - [GSYVideoPlayer](https://github.com/CarGuo/GSYVideoPlayer) - no working implementation is provided.
+- [mobile-ffmpeg](https://github.com/tanersener/mobile-ffmpeg) - doesn't play the stream.
 
 Players base on [libvlc](https://github.com/videolan/vlc-android#libvlc)
 - [VLC-android](https://github.com/videolan/vlc-android)
-- [vlc-example-streamplayer](https://github.com/pedroSG94/vlc-example-streamplayer)
 
 Excluded from consideration:
 - [VXG.Media.SDK.Android](https://github.com/VideoExpertsGroup/VXG.Media.SDK.Android) - closed source.
@@ -61,20 +60,22 @@ Excluded from consideration:
 3. Android phone with RTSP player installed (Player)
 4. Camera (for measurements)
 ### Processing video recordings
-Run the [script](TODO) to take out the frames. This script takes frames exponentially. Then we process the images and make graphs.
+Run the [script](https://github.com/shlegelal/AndroidStreamComparison/blob/main/Scripts/take_frames.py) to take out the frames. This script takes frames exponentially. Then we process the images and make graphs.
 ### Error calculation
 For my experiments I took the following devices
 - Monitor with a fps equal to 60
-- Android Samsung Galaxy S10 Lite as Server
-- Android Samsung Galaxy S10e as Player
+- Android Samsung Galaxy S10e as Server
+- Android Galaxy S10 Lite as Player
 - Samsung Galaxy Tab S6 Lite camera with fps equal to 30
 
 The error of the Server and of the Player with a fps of 30 will be up to 4 centi seconds, 8 centi seconds in total. And given the fps of the camera, the latency counting error should not be more than 12 centi seconds.
 
 ## Results
-TOODs 
-- [ ] library description
-- [ ] link to script
-- [ ] link to table
 
-[Table](TODO)
+The following [VLC commands](https://wiki.videolan.org/VLC_command-line_help/) affect the latency:
+- network-caching
+- rtsp-caching
+- clock-jitter
+- clock-synchro
+
+We managed to reach a latency of less than 0.4 second
