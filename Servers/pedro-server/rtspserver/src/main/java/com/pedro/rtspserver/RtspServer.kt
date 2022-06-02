@@ -4,21 +4,20 @@ import android.media.MediaCodec
 import android.util.Log
 import com.pedro.rtsp.utils.ConnectCheckerRtsp
 import com.pedro.rtsp.utils.RtpConstants
-import java.io.*
-import java.net.*
+import java.io.IOException
+import java.net.InetAddress
+import java.net.NetworkInterface
+import java.net.ServerSocket
+import java.net.SocketException
 import java.nio.ByteBuffer
 import java.util.*
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
 
 /**
- *
- * Created by pedro on 13/02/19.
- *
- *
- * TODO Use different session per client.
+ * RTSP server implementation.
+ * @author pedro
  */
-
 open class RtspServer(private val connectCheckerRtsp: ConnectCheckerRtsp,
   val port: Int): ClientListener {
 
@@ -40,11 +39,9 @@ open class RtspServer(private val connectCheckerRtsp: ConnectCheckerRtsp,
   private var running = false
   private val semaphore = Semaphore(0)
 
-  fun setAuth(user: String?, password: String?) {
-    this.user = user
-    this.password = password
-  }
-
+  /**
+   * Starts RTSP server.
+   */
   fun startServer() {
     stopServer()
     thread = Thread {
@@ -97,8 +94,9 @@ open class RtspServer(private val connectCheckerRtsp: ConnectCheckerRtsp,
     thread?.start()
   }
 
-  fun getNumClients(): Int = clients.size
-
+  /**
+   * Stops RTSP server.
+   */
   fun stopServer() {
     synchronized(clients) {
       clients.forEach { it.stopClient() }
@@ -116,20 +114,10 @@ open class RtspServer(private val connectCheckerRtsp: ConnectCheckerRtsp,
     thread = null
   }
 
-  fun isRunning(): Boolean = running
-
-  fun setOnlyAudio(onlyAudio: Boolean) {
-    if (onlyAudio) {
-      RtpConstants.trackAudio = 0
-      RtpConstants.trackVideo = 1
-    } else {
-      RtpConstants.trackVideo = 0
-      RtpConstants.trackAudio = 1
-    }
-    audioDisabled = false
-    videoDisabled = onlyAudio
-  }
-
+  /**
+   * Sets the transmission type to video only.
+   * @param onlyVideo if enabled, only video in the stream.
+   */
   fun setOnlyVideo(onlyVideo: Boolean) {
     RtpConstants.trackVideo = 0
     RtpConstants.trackAudio = 1
@@ -137,13 +125,9 @@ open class RtspServer(private val connectCheckerRtsp: ConnectCheckerRtsp,
     audioDisabled = onlyVideo
   }
 
-  fun setLogs(enable: Boolean) {
-    logs = enable
-    synchronized(clients) {
-      clients.forEach { it.rtspSender.setLogs(enable) }
-    }
-  }
-
+  /**
+   * Sends video to synchronized clients.
+   */
   fun sendVideo(h264Buffer: ByteBuffer, info: MediaCodec.BufferInfo) {
     synchronized(clients) {
       clients.forEach {
@@ -154,16 +138,12 @@ open class RtspServer(private val connectCheckerRtsp: ConnectCheckerRtsp,
     }
   }
 
-  fun sendAudio(aacBuffer: ByteBuffer, info: MediaCodec.BufferInfo) {
-    synchronized(clients) {
-      clients.forEach {
-        if (it.isAlive && it.canSend && !it.commandsManager.audioDisabled) {
-          it.rtspSender.sendAudioFrame(aacBuffer.duplicate(), info)
-        }
-      }
-    }
-  }
-
+  /**
+   * Sets the formatting information for the video file.
+   * @param sps shell processing support
+   * @param pps pulse-per-second signal
+   * @param vps variable bitrate
+   */
   fun setVideoInfo(sps: ByteBuffer, pps: ByteBuffer, vps: ByteBuffer?) {
     this.sps = sps
     this.pps = pps
@@ -196,14 +176,6 @@ open class RtspServer(private val connectCheckerRtsp: ConnectCheckerRtsp,
     } catch (ignored: Exception) { }
     // for now eat exceptions
     return "0.0.0.0"
-  }
-
-  fun hasCongestion(): Boolean {
-    synchronized(clients) {
-      var congestion = false
-      clients.forEach { if (it.hasCongestion()) congestion = true }
-      return congestion
-    }
   }
 
   override fun onDisconnected(client: ServerClient) {

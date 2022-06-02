@@ -13,6 +13,10 @@ import java.net.Socket
 import java.net.SocketException
 import java.nio.ByteBuffer
 
+/**
+ * Manages the interaction of the RTSP client with the server.
+ * @author pedro
+ */
 open class ServerClient(private val socket: Socket, serverIp: String, serverPort: Int,
   connectCheckerRtsp: ConnectCheckerRtsp, clientAddress: String, sps: ByteBuffer?,
   pps: ByteBuffer?, vps: ByteBuffer?, sampleRate: Int, isStereo: Boolean,
@@ -88,6 +92,9 @@ open class ServerClient(private val socket: Socket, serverIp: String, serverPort
     }
   }
 
+  /**
+   * Stops client sender.
+   */
   fun stopClient() {
     canSend = false
     rtspSender.stop()
@@ -100,6 +107,4 @@ open class ServerClient(private val socket: Socket, serverIp: String, serverPort
       socket.close()
     }
   }
-
-  fun hasCongestion(): Boolean = rtspSender.hasCongestion()
 }
