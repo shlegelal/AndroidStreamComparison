@@ -2,6 +2,10 @@
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/03b7aa2dc5b049749bf907a5e3271b9c)](https://www.codacy.com/gh/shlegelal/AndroidStreamComparison/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=shlegelal/AndroidStreamComparison&amp;utm_campaign=Badge_Grade)
 
+| **Server** | [![Known Vulnerabilities](https://snyk.io/test/github/shlegelal/AndroidStreamComparison/badge.svg?targetFile=Servers/pedro-server/app/build.gradle)](https://snyk.io/test/github/shlegelal/AndroidStreamComparison?targetFile=Servers/pedro-server/app/build.gradle)             |
+|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Player** | [![Known Vulnerabilities](https://snyk.io/test/github/shlegelal/AndroidStreamComparison/badge.svg?targetFile=Players/libvlc-rtsp-player/app/build.gradle)](https://snyk.io/test/github/shlegelal/AndroidStreamComparison?targetFile=Players/libvlc-rtsp-player/app/build.gradle) |
+
 Comparison of streaming libraries for Android with low latency.
 
 ## Goal
