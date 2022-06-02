@@ -14,9 +14,8 @@ import java.net.SocketException
 import java.util.regex.Pattern
 
 /**
- *
- * Created by pedro on 23/10/19.
- *
+ * Manages requests.
+ * @author pedro
  */
 open class ServerCommandManager(private val serverIp: String, private val serverPort: Int,
                            val clientIp: String) : CommandsManager() {
@@ -26,6 +25,9 @@ open class ServerCommandManager(private val serverIp: String, private val server
   var videoPorts = ArrayList<Int>()
   private var track: Int? = null
 
+  /**
+   * Creates response.
+   */
   fun createResponse(method: Method, request: String, cSeq: Int): String {
     return when (method){
       Method.OPTIONS -> createOptions(cSeq)
@@ -129,6 +131,9 @@ open class ServerCommandManager(private val serverIp: String, private val server
     }
   }
 
+  /**
+   * Receives requests.
+   */
   @Throws(IOException::class, IllegalStateException::class, SocketException::class)
   fun getRequest(input: BufferedReader): Command {
     return super.getResponse(input, Method.UNKNOWN)
@@ -145,6 +150,9 @@ open class ServerCommandManager(private val serverIp: String, private val server
     }
   }
 
+  /**
+   * Returns the error code.
+   */
   fun createError(code: Int, cSeq: Int): String {
     val auth = if (code == 401) {
       "WWW-Authenticate: Basic realm=\"pedroSG94\"\r\n"
